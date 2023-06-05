@@ -16,6 +16,7 @@ ps:
 	docker-compose -f docker/docker-compose.yml --env-file .env ps -a
 
 
+
 .PHONY: prod-up
 prod-up:
 	docker-compose -f docker/docker-compose.prod.yml --env-file .env up -d --build
@@ -32,11 +33,15 @@ prod-logs:
 prod-ps:
 	docker-compose -f docker/docker-compose.prod.yml --env-file .env ps -a
 
+.PHONY: compose-start
+compose-start: prod-up
+	 docker-compose -f docker/docker-compose.prod.yml exec web python3 app/manage.py collectstatic
+
+
 
 .PHONY: gunicorn
 gunicorn:
 	poetry run gunicorn --reload --bind 0.0.0.0:8000 --chdir app/ config.wsgi:application
-
 
 .PHONY: migrate
 migrate:
@@ -45,7 +50,3 @@ migrate:
 .PHONY: createsuperuser
 createsuperuser: migrate
 	poetry run python3 app/manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser(username='admin', password='1')"
-
-.PHONY: collectstatic
-collectstatic:
-	poetry run python3 app/manage.py collectstatic --no-input --clear
