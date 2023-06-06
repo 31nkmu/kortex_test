@@ -19,19 +19,19 @@ ps:
 
 .PHONY: prod-up
 prod-up:
-	docker-compose -f docker/docker-compose.prod.yml --env-file .env up -d --build
+	docker-compose -f docker/docker-compose.prod.yml --env-file docker/.env up -d --build
 
 .PHONY: prod-down
 prod-down:
-	docker-compose -f docker/docker-compose.prod.yml --env-file .env down -v
+	docker-compose -f docker/docker-compose.prod.yml --env-file docker/.env down -v
 
 .PHONY: prod-logs
 prod-logs:
-	docker-compose -f docker/docker-compose.prod.yml --env-file .env logs -f
+	docker-compose -f docker/docker-compose.prod.yml --env-file docker/.env logs -f
 
 .PHONY: prod-ps
 prod-ps:
-	docker-compose -f docker/docker-compose.prod.yml --env-file .env ps -a
+	docker-compose -f docker/docker-compose.prod.yml --env-file docker/.env ps -a
 
 .PHONY: compose-start
 compose-start: prod-up
@@ -41,7 +41,7 @@ compose-start: prod-up
 
 .PHONY: gunicorn
 gunicorn:
-	poetry run gunicorn --reload --bind 0.0.0.0:8000 --chdir app/ config.wsgi:application
+	poetry run gunicorn --reload --bind $(HOST):$(PORT) --workers $(WORKERS) --log-level $(LEVEL) --chdir app/ config.wsgi:application
 
 .PHONY: migrate
 migrate:
