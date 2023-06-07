@@ -32,8 +32,11 @@ ps: ## Список всех контейнеров
 
 .PHONY: createsuperuser
 createsuperuser: ## Создание суперпользователя
-	docker-compose -f docker/docker-compose.yml exec web python3 app/manage.py createsuperuser
+	docker-compose -f docker/docker-compose.yml --env-file .env exec web python3 app/manage.py createsuperuser
 
+.PHONY: exec
+exec:
+	docker-compose -f docker/docker-compose.yml --env-file .env exec web bash
 
 
 
@@ -69,13 +72,15 @@ compose-ps: ## Список всех контейнеров
 
 .PHONY: compose-collect-up
 compose-collect-up: compose-up ## Полный запуск контейнеров
-	 docker-compose -f docker/docker-compose.prod.yml exec web python3 app/manage.py collectstatic
+	 docker-compose -f docker/docker-compose.prod.yml --env-file docker/.env exec web python3 app/manage.py collectstatic
 
 .PHONY: compose-createsuperuser
 compose-createsuperuser: ## Создание суперпользователя
-	## poetry run python3 app/manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser(username='admin', password='1')"
-	docker-compose -f docker/docker-compose.prod.yml exec web python3 app/manage.py createsuperuser
+	docker-compose -f docker/docker-compose.prod.yml --env-file docker/.env exec web python3 app/manage.py createsuperuser
 
+.PHONY: compose-exec
+compose-exec:
+	docker-compose -f docker/docker-compose.prod.yml --env-file docker/.env exec web bash
 
 
 .PHONY: gunicorn
