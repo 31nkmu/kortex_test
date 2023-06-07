@@ -25,6 +25,7 @@ RUN poetry install --no-root --no-dev
 
 COPY . .
 
-RUN mkdir $APP_HOME/app/staticfiles
+RUN mkdir $APP_HOME/app/static
+RUN mkdir $APP_HOME/app/media
 
 CMD ["make", "gunicorn"]

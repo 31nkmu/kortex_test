@@ -25,4 +25,4 @@ RUN poetry install --no-root --no-dev
 
 COPY . .
 
-CMD ["make", "createsuperuser"]
+CMD ["make", "migrate"]

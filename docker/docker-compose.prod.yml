@@ -6,7 +6,8 @@ services:
       context: ..
       dockerfile: docker/Dockerfile.prod
     volumes:
-      - static_volume:/home/app/web/app/staticfiles
+      - static_volume:/home/app/web/app/static
+      - media_volume:/home/app/web/app/media
     expose:
       - $(PORT)
     env_file:
@@ -42,7 +43,8 @@ services:
   nginx:
     build: ../nginx
     volumes:
-      - static_volume:/home/app/web/app/staticfiles
+      - static_volume:/home/app/web/app/static
+      - media_volume:/home/app/web/app/media
     ports:
       - 80:80
     depends_on:
@@ -58,3 +60,4 @@ networks:
 volumes:
   postgres_data:
   static_volume:
+  media_volume:
