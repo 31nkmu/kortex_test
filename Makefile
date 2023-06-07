@@ -1,4 +1,7 @@
 .SILENT:
+
+# Запуск докер контейнера в разработке
+
 .PHONY: up
 up:
 	docker-compose -f docker/docker-compose.yml --env-file .env up -d --build
@@ -16,6 +19,8 @@ ps:
 	docker-compose -f docker/docker-compose.yml --env-file .env ps -a
 
 
+
+# Запуск контейнера в проадкшене
 
 .PHONY: prod-up
 prod-up:
@@ -46,6 +51,10 @@ gunicorn:
 .PHONY: migrate
 migrate:
 	poetry run python3 app/manage.py migrate
+
+.PHONY: makemigrations
+makemigrations:
+	poetry run python3 app/manage.py makemigrations
 
 .PHONY: createsuperuser
 createsuperuser: migrate
