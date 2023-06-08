@@ -1,11 +1,10 @@
 FROM python:3.10-slim
 
+RUN mkdir -p /home/app
+
 ENV HOME=/home/app
 ENV APP_HOME=/home/app/web
-RUN mkdir $HOME
 RUN mkdir $APP_HOME
-RUN mkdir $APP_HOME/staticfiles
-WORKDIR $APP_HOME
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -20,9 +19,14 @@ RUN apt-get update; \
     apt-get install -y curl make build-essential; \
     curl -sSL https://install.python-poetry.org | python -
 
-COPY poetry.lock pyproject.toml $APP_HOME
+WORKDIR $APP_HOME
+
+COPY poetry.lock pyproject.toml .
 RUN poetry install --no-root --no-dev
 
 COPY . .
+
+RUN mkdir $APP_HOME/app/static
+RUN mkdir $APP_HOME/app/media
 
 CMD ["make", "migrate"]

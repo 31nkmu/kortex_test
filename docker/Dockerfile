@@ -2,7 +2,11 @@
 FROM python:3.10-slim
 
 # set work directory
-WORKDIR /usr/src/code
+RUN mkdir -p /home/app
+
+ENV HOME=/home/app
+ENV APP_HOME=/home/app/web
+RUN mkdir $APP_HOME
 
 # set environment variables
 ENV PYTHONUNBUFFERED=1 \
@@ -19,9 +23,10 @@ RUN apt-get update; \
     apt-get install -y curl make build-essential; \
     curl -sSL https://install.python-poetry.org | python -
 
+WORKDIR $APP_HOME
 
 # install dependencies
-COPY poetry.lock pyproject.toml /usr/src/code
+COPY poetry.lock pyproject.toml .
 RUN poetry install --no-root --no-dev
 
 # copy project

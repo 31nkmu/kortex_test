@@ -5,7 +5,6 @@ RUN mkdir -p /home/app
 ENV HOME=/home/app
 ENV APP_HOME=/home/app/web
 RUN mkdir $APP_HOME
-WORKDIR $APP_HOME
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -19,6 +18,8 @@ ENV PYTHONUNBUFFERED=1 \
 RUN apt-get update; \
     apt-get install -y curl make build-essential; \
     curl -sSL https://install.python-poetry.org | python -
+
+WORKDIR $APP_HOME
 
 COPY poetry.lock pyproject.toml .
 RUN poetry install --no-root --no-dev
