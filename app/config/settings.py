@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'drf_yasg',
 
     # app
+    'applications.account',
 ]
 
 CSRF_TRUSTED_ORIGINS = os.environ.get("BACKEND_CORS_ORIGINS", "http://localhost:8000 http://127.0.0.1:8000").split(" ")
@@ -179,3 +180,5 @@ EMAIL_USE_TLS = True
 # Redis
 BROKER_URL = 'redis://127.0.0.1:6379/0'
 BROKER_TRANSPORT = 'redis'
+
+AUTH_USER_MODEL = 'account.CustomUser'
