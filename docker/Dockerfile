@@ -31,3 +31,5 @@ RUN poetry install --no-root --no-dev
 
 # copy project
 COPY . .
+
+WORKDIR $APP_HOME/app

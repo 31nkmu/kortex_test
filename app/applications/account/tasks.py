@@ -2,7 +2,6 @@ import os
 
 from config.celery import app
 from django.core.mail import send_mail
-from twilio.rest import Client
 
 
 @app.task
@@ -24,12 +23,3 @@ def send_forgot_password_code(email, activation_code):
         os.environ.get("EMAIL_HOST_USER"),
         [email]
     )
-
-
-@app.task
-def send_code_to_phone(code, receiver):
-    account_sid = os.environ.get("ACCOUNT_CID")
-    auth_token = os.environ.get("AUTH_TOKEN")
-    client = Client(account_sid, auth_token)
-    messages = client.messages.create(body=f'Ваш код подтверждения, для входа: {code}',
-                                      from_=os.environ.get("PHONE_NUMBER"), to=receiver)

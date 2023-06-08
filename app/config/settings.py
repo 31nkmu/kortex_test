@@ -178,7 +178,14 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_USE_TLS = True
 
 # Redis
-BROKER_URL = 'redis://127.0.0.1:6379/0'
+BROKER_URL = f'redis://{os.environ.get("REDIS_HOST", "localhost")}:{os.environ.get("REDIS_PORT", 6379)}/0'
 BROKER_TRANSPORT = 'redis'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': BASE_DIR / 'cache/',
+    }
+}
 
 AUTH_USER_MODEL = 'account.CustomUser'
