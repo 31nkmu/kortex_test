@@ -4,39 +4,39 @@
 
 .PHONY: up
 up: ## Создает и запускает контейнер
-	docker-compose -f docker/docker-compose.yml --env-file .env up -d --build
+	docker-compose -f docker/docker-compose.yml up -d --build
 
 .PHONY: down
 down: ## Останавливает и удаляет контейнеры
-	docker-compose -f docker/docker-compose.yml --env-file .env down
+	docker-compose -f docker/docker-compose.yml down
 
 .PHONY: stop
 stop: ## Останавливает контейнеры
-	docker-compose -f docker/docker-compose.yml --env-file .env stop
+	docker-compose -f docker/docker-compose.yml stop
 
 .PHONY: start
 start: ## Запускает контейнеры
-	docker-compose -f docker/docker-compose.yml --env-file .env start
+	docker-compose -f docker/docker-compose.yml start
 
 .PHONY: down-v
 down-v: ## Останавливает и удаляет контейнеры вместе с зависимостями
-	docker-compose -f docker/docker-compose.yml --env-file .env down -v
+	docker-compose -f docker/docker-compose.yml down -v
 
 .PHONY: logs
 logs: ## Просмотр логов
-	docker-compose -f docker/docker-compose.yml --env-file .env logs -f
+	docker-compose -f docker/docker-compose.yml logs -f
 
 .PHONY: ps
 ps: ## Список всех контейнеров
-	docker-compose -f docker/docker-compose.yml --env-file .env ps -a
+	docker-compose -f docker/docker-compose.yml ps -a
 
 .PHONY: createsuperuser
 createsuperuser: ## Создание суперпользователя
-	docker-compose -f docker/docker-compose.yml --env-file .env exec web python3 app/manage.py createsuperuser
+	docker-compose -f docker/docker-compose.yml exec web python3 manage.py createsuperuser
 
 .PHONY: exec
 exec:
-	docker-compose -f docker/docker-compose.yml --env-file .env exec web bash
+	docker-compose -f docker/docker-compose.yml exec web bash
 
 
 
@@ -44,43 +44,43 @@ exec:
 
 .PHONY: compose-up
 compose-up: ## Создает и запускает контейнер
-	docker-compose -f docker/docker-compose.prod.yml --env-file docker/.env up -d --build
+	docker-compose -f docker/docker-compose.prod.yml up -d --build
 
 .PHONY: compose-down
 compose-down: ## Останавливает и удаляет контейнеры
-	docker-compose -f docker/docker-compose.prod.yml --env-file docker/.env down
+	docker-compose -f docker/docker-compose.prod.yml down
 
 .PHONY: compose-down-v
 compose-down-v: ## Останавливает и удаляет контейнеры вместе с зависимостями
-	docker-compose -f docker/docker-compose.prod.yml --env-file docker/.env down -v
+	docker-compose -f docker/docker-compose.prod.yml down -v
 
 .PHONY: compose-stop
 compose-stop: ## Останавливает контейнеры
-	docker-compose -f docker/docker-compose.prod.yml --env-file docker/.env stop
+	docker-compose -f docker/docker-compose.prod.yml stop
 
 .PHONY: compose-start
 compose-start: ## Запускает контейнеры
-	docker-compose -f docker/docker-compose.prod.yml --env-file docker/.env start
+	docker-compose -f docker/docker-compose.prod.yml start
 
 .PHONY: compose-logs
 compose-logs: ## Просмотр логов
-	docker-compose -f docker/docker-compose.prod.yml --env-file docker/.env logs -f
+	docker-compose -f docker/docker-compose.prod.yml logs -f
 
 .PHONY: compose-ps
 compose-ps: ## Список всех контейнеров
-	docker-compose -f docker/docker-compose.prod.yml --env-file docker/.env ps -a
+	docker-compose -f docker/docker-compose.prod.yml ps -a
 
 .PHONY: compose-collect-up
 compose-collect-up: compose-up ## Полный запуск контейнеров
-	 docker-compose -f docker/docker-compose.prod.yml --env-file docker/.env exec web python3 app/manage.py collectstatic
+	 docker-compose -f docker/docker-compose.prod.yml exec web python3 manage.py collectstatic
 
 .PHONY: compose-createsuperuser
 compose-createsuperuser: ## Создание суперпользователя
-	docker-compose -f docker/docker-compose.prod.yml --env-file docker/.env exec web python3 app/manage.py createsuperuser
+	docker-compose -f docker/docker-compose.prod.yml exec web python3 app/manage.py createsuperuser
 
 .PHONY: compose-exec
 compose-exec:
-	docker-compose -f docker/docker-compose.prod.yml --env-file docker/.env exec web bash
+	docker-compose -f docker/docker-compose.prod.yml exec web bash
 
 
 .PHONY: gunicorn

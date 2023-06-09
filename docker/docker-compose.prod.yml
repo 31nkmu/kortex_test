@@ -9,19 +9,22 @@ services:
       - static_volume:/home/app/web/app/static
       - media_volume:/home/app/web/app/media
     expose:
-      - $(PORT)
+      - ${PORT}
+    command: poetry run gunicorn --reload --bind ${HOST}:${PORT} --workers ${WORKERS} --log-level ${LEVEL} config.wsgi:application
     env_file:
       - .env
     depends_on:
       - db
       - migration
+      - redis
     networks:
       - network
 
   migration:
     build:
       context: ..
-      dockerfile: docker/Dockerfile.migration
+      dockerfile: docker/Dockerfile
+    command: poetry run python3 manage.py migrate
     depends_on:
       - db
     env_file:
@@ -39,6 +42,17 @@ services:
       POSTGRES_DB: ${SQL_DATABASE}
     networks:
       - network
+    env_file:
+      - .env
+
+  redis:
+    restart: unless-stopped
+    image: redis:7.0.5-alpine
+    expose:
+      - ${REDIS_PORT}
+    networks:
+      - network
+
 
   nginx:
     build: ../nginx
@@ -46,9 +60,36 @@ services:
       - static_volume:/home/app/web/app/static
       - media_volume:/home/app/web/app/media
     ports:
-      - 80:80
+      - ${NGINX_PORT}:${NGINX_PORT}
     depends_on:
       - web
+    networks:
+      - network
+
+  celery:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.prod
+    command: celery -A config worker -l info
+    depends_on:
+      - web
+    env_file:
+      - .env
+    networks:
+      - network
+
+
+  flower:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.prod
+    command: celery -A config.celery:app flower
+    depends_on:
+      - web
+    ports:
+      - ${FLOWER_PORT}:${FLOWER_PORT}
+    env_file:
+      - .env
     networks:
       - network
 

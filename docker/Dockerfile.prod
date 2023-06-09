@@ -29,4 +29,4 @@ COPY . .
 RUN mkdir $APP_HOME/app/static
 RUN mkdir $APP_HOME/app/media
 
-CMD ["make", "gunicorn"]
+WORKDIR $APP_HOME/app
