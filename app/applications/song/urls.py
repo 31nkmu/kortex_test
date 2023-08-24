@@ -2,12 +2,11 @@ from django.urls import path
 from rest_framework.routers import DefaultRouter
 from . import views
 
-
 router = DefaultRouter()
-router.register('', views.ElectronicViewSet, basename='electronic')
+router.register('', views.SongViewSet)
 
 urlpatterns = [
-    path('recommend/', views.ElectronicRecommendApiView.as_view()),
+    path('album/', views.AlbumViewSet.as_view()),
 ]
 
 urlpatterns += router.urls

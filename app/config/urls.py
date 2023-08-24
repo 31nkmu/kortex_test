@@ -35,7 +35,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('swagger/', schema_view.with_ui('swagger')),
 
-    path('api/v1/account/', include('applications.account.urls')),
+    path('song/', include('applications.song.urls')),
+    path('singer/', include('applications.singer.urls')),
 ]
 
 urlpatterns += static(
