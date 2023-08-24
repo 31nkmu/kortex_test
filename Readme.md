@@ -6,8 +6,7 @@ ___
 | Инструмент | Описание |
 |----------|---------|
 | [Python](https://www.python.org/downloads/) |  Язык программирования |
-| [Poetry](https://python-poetry.org/) |  Менеджер зависимостей |
-| [Redis](https://redis.io/docs/getting-started/installation/install-redis-on-linux/) | Хранилище данных
+| [Poetry](https://python-poetry.org/) |  Менеджер зависимостей
 
 * Склонируй репозиторий используя команду
 ```Bash
